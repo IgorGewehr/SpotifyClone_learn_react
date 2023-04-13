@@ -64,6 +64,13 @@ const Sidebar = ({ saldo, isLogged }) => {
 
       <div className={`absolute top-0 h-screen w-2/3 bg-gradient-to-tl from-white/10 to-[#483D8B] backdrop-blur-lg z-10 p-6 md:hidden smooth-transition ${mobileMenuOpen ? 'left-0' : '-left-full'}`}>
         <img src={logo} alt="logo" className="w-full h-14 object-contain" />
+        <div className="md:hidden flex flex-col justify-center items-center">
+          <h1 style={{ color: "#00cc66", marginTop: 0, fontSize: "1.5rem", fontWeight: "bold" }}>
+            SALDO: R${saldo}
+          </h1>
+        </div>
+
+
         <NavLinks handleClick={() => setMobileMenuOpen(false)} isLogged={isLogged}/>
       </div>
     </>
