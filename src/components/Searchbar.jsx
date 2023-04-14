@@ -16,7 +16,7 @@ const Searchbar = ({ saldo }) => {
         Search all files
       </label>
       <div className="flex flex-row justify-start items-center h-16">
-        <h1 className="text-green-400 font-bold text-xl mx-auto py-4 sm:hidden">Saldo: R$ {saldo.toFixed(2)}</h1>
+        <h1 className="text-green-400 font-bold text-xl mx-auto py-4 sm:hidden">Saldo: R$ {saldo}</h1>
       </div>
     </form>
   );
