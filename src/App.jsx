@@ -16,6 +16,17 @@ const App = () => {
   const [isLogged, setIsLoged] = useState(false);
   const loginRealizado = () => {setIsLoged(true)};
 
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrollPosition(window.pageYOffset);
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  
+
   useEffect(() => {
     localStorage.setItem('saldo', saldo);
   }, [saldo]);

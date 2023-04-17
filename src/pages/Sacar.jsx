@@ -62,8 +62,6 @@ const MessageContainer = styled.div`
   width: 35vw; // nova propriedade adicionada
 `;
 
-
-
 const CloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -74,6 +72,30 @@ const CloseButton = styled.button`
   color: #ffffff;
   cursor: pointer;
 `;
+
+const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+const SelectTitle = styled.h2`
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+`;
+
+const Select = styled.select`
+  border: 2px solid #d2d2d2;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
+  width: 300px;
+`;
+
+
 
 const Sacar = ({ saldo, saqueRealizado }) => {
   const [showMessage, setShowMessage] = useState(false);
@@ -88,12 +110,34 @@ const Sacar = ({ saldo, saqueRealizado }) => {
     setShowMessage(false);
   };
 
+  const [tipoChave, setTipoChave] = useState('cpf'); // estado para armazenar o tipo de chave selecionado
+  const [valorChave, setValorChave] = useState(''); // estado para armazenar o valor da chave digitado
+
+  const handleTipoChaveChange = (event) => { // função para atualizar o tipo de chave selecionado
+    setTipoChave(event.target.value);
+  };
+
+  const handleValorChaveChange = (event) => { // função para atualizar o valor da chave digitado
+    setValorChave(event.target.value);
+  };
+
+  const chavePixLabel = tipoChave === 'email' ? 'E-mail' : tipoChave === 'telefone' ? 'Telefone' : 'CPF'; // label dinâmico para a chave PIX
+
+  const chavePixPlaceholder = tipoChave === 'email' ? 'exemplo@exemplo.com' : tipoChave === 'telefone' ? '(00) 00000-0000' : '000.000.000-00'; // placeholder dinâmico para a chave PIX
+
+  
+
   return (
     <div>
       <PageTitle>SAQUE PIX</PageTitle>
       <InputWrapper>
-        <InputTitle>Digite sua chave Pix CPF</InputTitle>
-        <InputField type="text" placeholder="000.000.000-00" />
+        <InputTitle>Digite sua chave Pix</InputTitle>
+        <select value={tipoChave} onChange={handleTipoChaveChange}>
+          <option value="cpf">CPF</option>
+          <option value="email">E-mail</option>
+          <option value="telefone">Telefone</option>
+        </select>
+        <InputField type="text" placeholder={chavePixPlaceholder} value={valorChave} onChange={handleValorChaveChange} />
       </InputWrapper>
       <ButtonWrapper>
         <div style={{ position: 'relative' }}>
@@ -108,6 +152,7 @@ const Sacar = ({ saldo, saqueRealizado }) => {
       </ButtonWrapper>
     </div>
   );
+  
 };
 
 export default Sacar;

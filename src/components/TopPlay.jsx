@@ -1,16 +1,10 @@
-/* eslint-disable import/no-unresolved */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode } from 'swiper';
 
 import PlayPause from './PlayPause';
 import { playPause, setActiveSong } from '../redux/features/playerSlice';
 import { useGetTopChartsQuery } from '../redux/services/shazamCore';
-
-import 'swiper/css';
-import 'swiper/css/free-mode';
 
 const TopChartCard = ({ song, i, isPlaying, activeSong, handlePauseClick, handlePlayClick }) => (
   <div className={`w-full flex flex-row items-center hover:bg-[#4c426e] ${activeSong?.title === song?.title ? 'bg-[#4c426e]' : 'bg-transparent'} py-2 p-4 rounded-lg cursor-pointer mb-2`}>
@@ -38,20 +32,21 @@ const TopChartCard = ({ song, i, isPlaying, activeSong, handlePauseClick, handle
   </div>
 );
 
-
-
-const TopPlay = ({saldo, increaseSaldo}) => {
+const TopPlay = ({ saldo, increaseSaldo }) => {
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const { data } = useGetTopChartsQuery();
-  const divRef = useRef(null);
+  const containerRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    divRef.current.scrollIntoView({ behavior: 'smooth' });
-  });
+    if (isPlaying && !isScrolled) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth' });
+      setIsScrolled(true);
+    }
+  }, [isPlaying, isScrolled]);
 
   const topPlays = data ? data.slice(1, 5) : [];
-
 
   const handlePauseClick = () => {
     dispatch(playPause(false));
@@ -60,15 +55,14 @@ const TopPlay = ({saldo, increaseSaldo}) => {
   const handlePlayClick = (song, i) => {
     dispatch(setActiveSong({ song, data, i }));
     dispatch(playPause(true));
+    setIsScrolled(false);
     increaseSaldo();
   };
 
   return (
-    <div ref={divRef} className="xl:ml-6 ml-0 xl:mb-0 mb-6 flex-1 xl:max-w-[500px] max-w-full flex flex-col">
+    <div className="xl:ml-6 ml-0 xl:mb-0 mb-6 flex-1 xl:max-w-[500px] max-w-full flex flex-col">
       <div className="w-full flex flex-col">
-        
-
-        <div className="mt-4 flex flex-col gap-1">
+        <div className="mt-4 flex flex-col gap-1" ref={containerRef}>
           {topPlays?.map((song, i) => (
             <TopChartCard
               key={song.key}
@@ -82,6 +76,8 @@ const TopPlay = ({saldo, increaseSaldo}) => {
           ))}
         </div>
       </div>
+   
+
     </div>
   );
 };
