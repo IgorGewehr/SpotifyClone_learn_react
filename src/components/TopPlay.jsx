@@ -46,7 +46,7 @@ const TopPlay = ({ saldo, increaseSaldo }) => {
     }
   }, [isPlaying, isScrolled]);
 
-  const topPlays = data ? data.slice(1, 5) : [];
+  const topPlays = data ? data.slice(2, 5) : [];
 
   const handlePauseClick = () => {
     dispatch(playPause(false));
